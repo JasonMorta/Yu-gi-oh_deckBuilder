@@ -11,7 +11,7 @@ const corsOptions = { origin: "*" };
 app.use(cors(corsOptions));
 
 // server port
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8080
 
 // import card model
 const cards = require('./model.js')

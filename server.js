@@ -37,11 +37,25 @@ dbConnection.then(() => {
 app.get('/all', async (req, res) => {
     console.log('"/" triggered')
     try {
-        const all = await cards.find({}) 
-        res.json(all)
+        const all = await cards.find({})
+        res.json([" ", all])
     } catch (error) {
         console.log(error)
-        
+
+    }
+})
+
+//save deck
+app.post('/saveDeck', async (req, res) => {
+    console.log('"/saveDeck" triggered')
+    try {
+        const query = { _id: req.body.id };
+        const added = await userModel.findOneAndUpdate(query, { $push: { todo: req.body.todo_item } }, { new: true })
+        res.send([" ", added])
+        console.log("to-do added")
+    } catch (error) {
+        console.log(error)
+
     }
 })
 

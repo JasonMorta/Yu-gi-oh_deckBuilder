@@ -11,6 +11,11 @@ const cardSchema = new mongoose.Schema({
   card_sets: Array,
   card_images: Array,
   card_prices: Array,
+  userData: {
+    userName: String,
+    userDeck: Array,
+    savedDecks: Array,
+  },
 });
 
 const Card = mongoose.model('allcards', cardSchema);

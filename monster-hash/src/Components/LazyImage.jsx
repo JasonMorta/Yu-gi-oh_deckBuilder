@@ -18,7 +18,7 @@ function LazyImage({ cardInfo, src, alt, id, subtitle, title, label }) {
         effect="blur"
         style={{ borderRadius: "3px" }}
         visibleByDefault={false}
-        onClick={()=> cardInfo()}
+        onClick={()=> cardInfo()} // opens the modal
         src={src} // use normal <img> attributes as props
       />
       <CardPrevModal 

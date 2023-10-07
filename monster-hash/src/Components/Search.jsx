@@ -12,7 +12,7 @@ export default function Search() {
     const [input, setInput] = useState('')
   // Get all cards from state
   const state = useSelector((state) => state.cardsState);
-  console.log("filtered", state.filteredCards);
+  console.log("Search.js - filtered", state.filteredCards);
 
   // filter cards by name
   //   const cardName = 'Dragon';

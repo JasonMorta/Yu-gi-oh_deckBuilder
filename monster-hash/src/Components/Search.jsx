@@ -14,14 +14,6 @@ export default function Search() {
   const state = useSelector((state) => state.cardsState);
   console.log("Search.js - filtered", state.filteredCards);
 
-  // filter cards by name
-  //   const cardName = 'Dragon';
-
-  //   // filter cards by key words from name or card description
-  //   const result = jsonData.filter(item => item.name.includes(cardName) || item.desc.includes(cardName))
-  //   console.log('result', result)
-  //
-  //dispatch(loadCards(response))
 
   async function search(e) {
     const search = e.target.value;

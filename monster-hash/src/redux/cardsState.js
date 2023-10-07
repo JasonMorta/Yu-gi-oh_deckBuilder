@@ -8,6 +8,7 @@ const initialState = {
     savedDecks: [],
     edit: false,
     currentEdit: null,
+    showMyDeck: false
 
 }
 
@@ -37,6 +38,10 @@ export const state = createSlice({
             // Delete card from deck
             state.deck = state.deck.filter(item => item.id !== action.payload)
         },
+        showDeck: (state, action) => {
+            // Toggle showDeck state
+            state.showMyDeck = !state.showMyDeck
+        },
 
 
 
@@ -46,6 +51,6 @@ export const state = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { loadCards, filter, saveDeck } = state.actions
+export const { loadCards, filter, saveDeck, showDeck } = state.actions
 
 export default state.reducer

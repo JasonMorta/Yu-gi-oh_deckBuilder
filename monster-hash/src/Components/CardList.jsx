@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import LazyImage from "./LazyImage";
+import CSS from "./cardList.module.css";
 
 
 //display all teh filtered cards
@@ -10,7 +11,7 @@ export default function CardList() {
   const cards = useSelector((state) => state.cardsState.filteredCards);
 
   return (
-    <div className="result-container">
+    <div className={CSS.result_container}>
       {cards.map((card) => (
        <>
          <LazyImage 

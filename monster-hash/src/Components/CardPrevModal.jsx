@@ -4,47 +4,57 @@ import { Modal } from "react-responsive-modal";
 import "./Card.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import IconButton from "@mui/material/IconButton";
-import SaveIcon from "@mui/icons-material/Save";
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { useSelector, useDispatch } from "react-redux";
-import { loadCards, saveDeck } from "../redux/cardsState";
+import { removeCard, saveDeck } from "../redux/cardsState";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import { useLocation } from "react-router-dom";
 
-  // style for the modal button
-  const modelBtn = {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    zIndex: 3,
-    left: 0,
-    top: 0,
-  };
+// style for the modal button
+const modelBtn = {
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  zIndex: 3,
+  left: 0,
+  top: 0,
+};
 
-    // modal container styles
-    const styles = {
-      fontFamily: "sans-serif",
-      textAlign: "center",
-      backgroundColor: "red",
-    };
+// modal container styles
+const styles = {
+  fontFamily: "sans-serif",
+  textAlign: "center",
+  backgroundColor: "red",
+};
 
-
-    // Main component
+// Main component
 export default function CardPrevModal({ cardInfo }) {
   const [open, setOpen] = useState(false);
   const [modDesc, setModDesc] = useState("");
 
-
-    // get deck array from redux
-    const deck = useSelector((state) => state.cardsState.deck);
-
+  // get deck array from redux
+  const deck = useSelector((state) => state.cardsState.deck);
 
   // Dispatch is used to call the actions and update the store
   const dispatch = useDispatch();
+
+  const location = useLocation();
+  /* 
+    "pathname": "/deck",
+    "search": "",
+    "hash": "",
+    "state": null,
+    "key": "3t6f9jub"
+  */
 
   // open the modal
   const handleOpen = () => {
     description();
     setOpen(true);
+    console.log("location", location);
   };
 
   // close the modal
@@ -52,8 +62,7 @@ export default function CardPrevModal({ cardInfo }) {
     setOpen(false);
   };
 
-
-// modify card description
+  // modify card description
   function description() {
     let str = cardInfo.desc;
     let modifiedString = "";
@@ -76,11 +85,17 @@ export default function CardPrevModal({ cardInfo }) {
 
   // add(not save) card to deck
   function addToDeck(card) {
-  // dave card to redux deck array
+    // dave card to redux deck array
     dispatch(saveDeck(card));
 
-    console.log('deck: ',deck)
+    console.log("deck: ", deck);
+  }
 
+  function removeFromDeck(card) {
+    // dave card to redux deck array
+   dispatch(removeCard(card));
+
+    console.log("card: ", card);
   }
 
   return (
@@ -115,9 +130,30 @@ export default function CardPrevModal({ cardInfo }) {
           />
           {modDesc.props?.children}
 
-          <IconButton color="success" aria-label="add to deck">
-            <SaveIcon onClick={() => addToDeck(cardInfo)} />
-          </IconButton>
+          <div className="save_button_sections">
+            {location.pathname !== "/deck" ?
+            <>
+              <IconButton color="success" aria-label="add to deck">
+                <LibraryAddIcon
+                  titleAccess="add to deck"
+                  onClick={() => addToDeck(cardInfo)}
+                />
+              </IconButton>
+              <IconButton color="success" aria-label="add to deck">
+                <BookmarkBorderIcon titleAccess="Add to favorites" />
+              </IconButton>
+            </>
+            :
+            
+              <IconButton color="error" aria-label="add to deck">
+                <RemoveCircleOutlineIcon
+                  titleAccess="remove from deck"
+                  onClick={() => removeFromDeck(cardInfo)}
+                />
+              </IconButton>
+            
+          }
+          </div>
         </Modal>
       </div>
     </>

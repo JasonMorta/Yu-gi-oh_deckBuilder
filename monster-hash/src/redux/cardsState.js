@@ -42,6 +42,10 @@ export const state = createSlice({
             // Toggle showDeck state
             state.showMyDeck = !state.showMyDeck
         },
+        removeCard: (state, action) => {
+            // Remove card from deck
+            state.deck = state.deck.filter(item => item.id !== action.payload.id)
+        },
 
 
 
@@ -51,6 +55,6 @@ export const state = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { loadCards, filter, saveDeck, showDeck } = state.actions
+export const { loadCards, filter, saveDeck, showDeck,  removeCard} = state.actions
 
 export default state.reducer

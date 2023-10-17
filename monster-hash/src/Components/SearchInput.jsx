@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Input } from 'semantic-ui-react';
 import { useSelector, useDispatch } from "react-redux";
-import { filter } from "../redux/cardsState";
+import { filter,  } from "../redux/cardsState";
+import CSS from "./searchInput.module.css"
 
 
 export default function SearchInput() {
@@ -11,6 +12,9 @@ export default function SearchInput() {
     //get dispatch from store
     const dispatch = useDispatch();
 
+  
+ 
+
 
     
  function searchIcon(e) {
@@ -18,11 +22,12 @@ export default function SearchInput() {
   }
 
   function handleInput(e) {
+  //disable filtering when making new search request
       setInput(e.target.value)
 
       //make a search request on"Enter" key
         if (e.key === "Enter") {
-            dispatch(filter(input));
+            dispatch(filter(e.target.value));
         }
   }
 
@@ -32,6 +37,7 @@ export default function SearchInput() {
     icon={{ name: 'search', circular: true, link: true, onClick: searchIcon, }}
     placeholder='Search...'
     onKeyDown={(e)=> handleInput(e)}
+    className={CSS.searchInput}
   />
   )
 }

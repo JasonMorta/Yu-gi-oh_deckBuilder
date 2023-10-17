@@ -85,6 +85,7 @@ export default function CardPrevModal({ cardInfo }) {
 
   // add(not save) card to deck
   function addToDeck(card) {
+    console.log('card', card)
     // dave card to redux deck array
     dispatch(saveDeck(card));
 
@@ -145,10 +146,10 @@ export default function CardPrevModal({ cardInfo }) {
             </>
             :
             
-              <IconButton color="error" aria-label="add to deck">
+              <IconButton color="error" aria-label="add to deck" onClick={() => removeFromDeck(cardInfo)}>
                 <RemoveCircleOutlineIcon
                   titleAccess="remove from deck"
-                  onClick={() => removeFromDeck(cardInfo)}
+                  
                 />
               </IconButton>
             

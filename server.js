@@ -35,9 +35,10 @@ dbConnection.then(() => {
 /* ===========================API Routes=============================== */
 //
 app.get('/all', async (req, res) => {
-    console.log('"/" triggered')
+    console.log("Getting all cards...⏳")
     try {
         const all = await cards.find({})
+        console.log("Got all cards😅")
         res.json([" ", all])
     } catch (error) {
         console.log(error)

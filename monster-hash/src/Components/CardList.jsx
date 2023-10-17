@@ -8,11 +8,13 @@ import CSS from "./cardList.module.css";
 export default function CardList() {
 
   // Get filtered cards from state
-  const cards = useSelector((state) => state.cardsState.filteredCards);
+  const filteredCards = useSelector((state) => state.cardsState.filteredCards);
+  const searchResults = useSelector((state) => state.cardsState.searchResults);
+  const isFiltering = useSelector((state) => state.cardsState.isFiltering);
 
   return (
     <div className={CSS.result_container}>
-      {cards.map((card) => (
+      {!isFiltering ? searchResults.map((card) => (
        <>
          <LazyImage 
           src={card.card_images[0].image_url}
@@ -24,7 +26,22 @@ export default function CardList() {
           cardInfo={card}
           />
        </>
-           ))}
+           )):
+           filteredCards.map((card) => (
+            <>
+              <LazyImage 
+               src={card.card_images[0].image_url}
+               alt={card.name}
+               id={card.id}
+               subtitle={card.race}
+               title={card.name}
+               label={card.name}
+               cardInfo={card}
+               />
+            </>
+                ))
+           
+           }
     </div>
   );
 }

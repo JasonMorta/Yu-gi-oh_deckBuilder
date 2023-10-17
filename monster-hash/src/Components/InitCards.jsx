@@ -24,6 +24,7 @@ export default function InitCards() {
       .then((response) => {
         // save cards to redux store
         dispatch(loadCards(response[1]))
+        console.log(`%c READY`, 'color: #2196f3')
 
       })
       .catch((error) => {

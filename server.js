@@ -45,11 +45,12 @@ app.get('/all', async (req, res) => {
     }
 })
 
-//save deck
-app.post('/savedDecks', async (req, res) => {
-    console.log('"/saveDeck" triggered')
+
+//Update saved decks by deck-name
+app.get('/savedDecks', async (req, res) => {
     try {
         const query = { _id: req.body.id };
+       
         const added = await userModel.findOneAndUpdate(query, { $push: { todo: req.body.todo_item } }, { new: true })
         res.send([" ", added])
         console.log("to-do added")
@@ -58,6 +59,16 @@ app.post('/savedDecks', async (req, res) => {
 
     }
 })
+
+ //$push adds to array
+ //$set replaces array
+    //$pull removes from array
+    //$addToSet adds to array if it doesn't exist
+    //$pop removes last element from array
+    //$pushAll adds multiple elements to array
+    //$pullAll removes multiple elements from array
+    //$pull removes all matching values from array
+  
 
 
 

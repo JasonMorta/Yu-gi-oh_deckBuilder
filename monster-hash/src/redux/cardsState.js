@@ -2,10 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 
 //set all state initial values
 const initialState = {
-    allCards: [],
-    filteredCards: [],
-    deck: [],
-    savedDecks: [],
+    allCards: [],//all cards from API
+    filteredCards: [],// search results
+    deck: [],//current - selected deck
+    savedDecks: [],//deck names from API - {deckName: 'name', cardIds: [] }
     edit: false,
     currentEdit: null,
     showMyDeck: false

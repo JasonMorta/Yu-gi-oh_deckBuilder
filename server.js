@@ -46,7 +46,7 @@ app.get('/all', async (req, res) => {
 })
 
 //save deck
-app.post('/saveDeck', async (req, res) => {
+app.post('/savedDecks', async (req, res) => {
     console.log('"/saveDeck" triggered')
     try {
         const query = { _id: req.body.id };

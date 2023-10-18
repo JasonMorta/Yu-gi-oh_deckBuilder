@@ -52,9 +52,8 @@ export default function CardPrevModal({ cardInfo }) {
 
   // open the modal
   const handleOpen = () => {
-    description();
     setOpen(true);
-    console.log("location", location);
+    console.log(cardInfo);
   };
 
   // close the modal
@@ -62,30 +61,8 @@ export default function CardPrevModal({ cardInfo }) {
     setOpen(false);
   };
 
-  // modify card description
-  function description() {
-    let str = cardInfo.desc;
-    let modifiedString = "";
-    for (let i = 0; i < str.length; i++) {
-      if (str[i] === '"') {
-        modifiedString += "";
-      } else if (str[i] === "\n") {
-        modifiedString += "";
-      } else if (str[i] === "\r") {
-        modifiedString += "";
-      } else if (str[i] === `●`) {
-        modifiedString += `<li>●`;
-      } else {
-        modifiedString += str[i];
-      }
-    }
-    setModDesc(<p>{modifiedString}</p>);
-    console.log(modDesc);
-  }
-
   // add(not save) card to deck
   function addToDeck(card) {
-    console.log('card', card)
     // dave card to redux deck array
     dispatch(saveDeck(card));
 
@@ -94,7 +71,7 @@ export default function CardPrevModal({ cardInfo }) {
 
   function removeFromDeck(card) {
     // dave card to redux deck array
-   dispatch(removeCard(card));
+    dispatch(removeCard(card));
 
     console.log("card: ", card);
   }
@@ -112,7 +89,7 @@ export default function CardPrevModal({ cardInfo }) {
           }}
         >
           <h2>{cardInfo.name}</h2>
-          {cardInfo.banlist_info?.ban_tcg === "Banned" ? "Banned" : null}
+
           <LazyLoadImage
             id={`image-${cardInfo._id}`}
             alt={cardInfo.name}
@@ -129,31 +106,35 @@ export default function CardPrevModal({ cardInfo }) {
             visibleByDefault={false}
             src={cardInfo.card_images[0].image_url} // use normal <img> attributes as props
           />
-          {modDesc.props?.children}
+          <p className="card_desc">{cardInfo.desc}</p>
 
           <div className="save_button_sections">
-            {location.pathname !== "/deck" ?
-            <>
-              <IconButton color="success" aria-label="add to deck">
-                <LibraryAddIcon
-                  titleAccess="add to deck"
-                  onClick={() => addToDeck(cardInfo)}
-                />
+            {cardInfo.banlist_info?.ban_tcg === "Banned" ? (
+              <p className="banned_warning">Banned</p>
+            ) : (
+              <></>
+            )}
+            {location.pathname !== "/deck" ? (
+              <>
+                <IconButton color="success" aria-label="add to deck">
+                  <LibraryAddIcon
+                    titleAccess="add to deck"
+                    onClick={() => addToDeck(cardInfo)}
+                  />
+                </IconButton>
+                <IconButton color="success" aria-label="add to deck">
+                  <BookmarkBorderIcon titleAccess="Add to favorites" />
+                </IconButton>
+              </>
+            ) : (
+              <IconButton
+                color="error"
+                aria-label="add to deck"
+                onClick={() => removeFromDeck(cardInfo)}
+              >
+                <RemoveCircleOutlineIcon titleAccess="remove from deck" />
               </IconButton>
-              <IconButton color="success" aria-label="add to deck">
-                <BookmarkBorderIcon titleAccess="Add to favorites" />
-              </IconButton>
-            </>
-            :
-            
-              <IconButton color="error" aria-label="add to deck" onClick={() => removeFromDeck(cardInfo)}>
-                <RemoveCircleOutlineIcon
-                  titleAccess="remove from deck"
-                  
-                />
-              </IconButton>
-            
-          }
+            )}
           </div>
         </Modal>
       </div>

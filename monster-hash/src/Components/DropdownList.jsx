@@ -35,23 +35,22 @@ export default function DropdownList() {
   ];
 
   const cardTypes = [
-    "Monster Cards",
-    "Spell Cards",
-    "Trap Cards",
-    "Normal Monsters",
-    "Effect Monsters",
-    "Fusion Monsters",
-    "Synchro Monsters",
-    "Xyz Monsters",
-    "Link Monsters",
-    "Normal Spells",
-    "Continuous Spells",
-    "Equip Spells",
-    "Field Spells",
-    "Quick-Play Spells",
-    "Normal Traps",
-    "Continuous Traps",
-    "Counter Traps",
+    "Spell Card",
+    "Trap Card",
+    "Normal Monster",
+    "Effect Monster",
+    "Fusion Monster",
+    "Synchro Monster",
+    "Xyz Monster",
+    "Link Monster",
+    "Normal Spell",
+    "Continuous Spell",
+    "Equip Spell",
+    "Field Spell",
+    "Quick-Play Spell",
+    "Normal Trap",
+    "Continuous Trap",
+    "Counter Trap",
   ];
 
   const dispatch = useDispatch();
@@ -60,12 +59,12 @@ export default function DropdownList() {
   const filteredCards = useSelector((state) => state.cardsState.filteredCards);
   const searchResults = useSelector((state) => state.cardsState.searchResults);
   const isFiltering = useSelector((state) => state.cardsState.isFiltering);
-  const array = useSelector((state) => state.cardsState.joinedResults);
+  const filterList = useSelector((state) => state.cardsState.filterList);
+  
 
   const [joinedArray, setJoinedArray] = React.useState([]);
   const [raceArray, setRaceArray] = React.useState([]);
   const [cardTypeArray, setCardTypeArray] = React.useState([]);
-
 
   // dropdown options for monster types
   const monsterRaceOptions = _.map(monsterRace, (state, index) => ({
@@ -82,22 +81,22 @@ export default function DropdownList() {
   }));
 
   //MONSTER TYPE
-  const handleCardRaceChange =   (event, data) => {
-    const removed = event.target?.previousSibling?.data
-    const added = event.target?.innerText
-    dispatch(filerMyResults({add: added, del: removed}));// merge the two arrays and remove duplicates
+  const handleCardRaceChange = (event) => {
+    console.log("searchResults", searchResults);
+    console.log('filterList', filterList)
+    const removed = event.target?.previousSibling?.data;
+    const added = event.target?.innerText;
+    dispatch(filerMyResults({ add: added, del: removed })); // merge the two arrays and remove duplicates
   };
 
   //menu options for card type
-  const handleCardTypeChange = (event,  data) => {
-    const removed = event.target?.previousSibling?.data
-    console.log('removed', removed)
-    const added = event.target?.innerText
-    console.log('added', added)
-    dispatch(filerMyResults({add: added, del: removed}));// merge the two arrays and remove duplicates
+  const handleCardTypeChange = (event) => {
+    console.log("searchResults", searchResults);
+    console.log('filterList', filterList)
+    const removed = event.target?.previousSibling?.data;
+    const added = event.target?.innerText;
+    dispatch(filerMyResults({ add: added, del: removed })); // merge the two arrays and remove duplicates
   };
-
-
 
   return (
     <div>
@@ -108,28 +107,34 @@ export default function DropdownList() {
           ? `Found ${filteredCards.length} cards`
           : `Cards ${searchResults.length}`}
       </p>
-      <Dropdown
-        placeholder="Monster Type"
-        fluid
-        multiple// allows multiple selections
-        search
-        selection// allows user to select
-        options={monsterRaceOptions}
-        onClick={(e)=> console.log('e', e)}
-        className={CSS.dropdown}
-        onChange={handleCardRaceChange}
-      />
+      {searchResults.length > 0 ? (
+        <>
+          <Dropdown
+            placeholder="Monster Type / Race"
+            fluid
+            multiple // allows multiple selections
+            search
+            selection // allows user to select
+            options={monsterRaceOptions}
+            onClick={(e) => console.log("e", e)}
+            className={CSS.dropdown}
+            onChange={handleCardRaceChange}
+          />
 
-      <Dropdown
-        placeholder="Card Type"
-        fluid
-        multiple
-        search
-        selection
-        options={cardTypesOptions}
-        className={CSS.dropdown}
-        onChange={handleCardTypeChange}
-      />
+          <Dropdown
+            placeholder="Card Type"
+            fluid
+            multiple
+            search
+            selection
+            options={cardTypesOptions}
+            className={CSS.dropdown}
+            onChange={handleCardTypeChange}
+          />
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

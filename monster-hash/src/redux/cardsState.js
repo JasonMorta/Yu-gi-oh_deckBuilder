@@ -27,7 +27,7 @@ export const state = createSlice({
             state.allCards = action.payload
             console.log(`%c All cards loaded`, 'color: green')
         },
-        filter: (state, action) => {
+        filter: (state, action) => { //When making a search in the search bar
             console.log('action.payload', action.payload)
             // First disable filter when making a new search
             state.isFiltering = false
@@ -35,28 +35,52 @@ export const state = createSlice({
             // Filter cards by name or description
             // Also ignore case-sensitivity and search for whole words only
             state.searchResults = state.allCards.filter(item => {
-                const regex = new RegExp("\\b" + action.payload.toLowerCase() + "\\b");
+
+                //Filter exact match
+                // const regex = new RegExp("\\b" + action.payload.toLowerCase() + "\\b");
+                // return regex.test(item.name.toLowerCase()) || regex.test(item.desc.toLowerCase());
+
+                //filter containing match
+
+                const regex = new RegExp(action.payload.toLowerCase());
                 return regex.test(item.name.toLowerCase()) || regex.test(item.desc.toLowerCase());
+
             })
         },
         filerMyResults: (state, action) => {
 
-            let addCard = [action.payload.add]
+            let filterKeys = [action.payload.add]
+
+            console.log('addCard', filterKeys)
 
             // remove the del value from the filterList or add the add value to the filterList
             if (action.payload.del !== undefined) {
+                // Remove the deleted option from the filterList
                 state.filterList = state.filterList.filter(item => item !== action.payload.del)
             } else {
-                state.filterList = [...state.filterList, ...addCard]
+                // Spread the filterKey a nd join them to the filterList
+                state.filterList = [...state.filterList, ...filterKeys.filter(item => item.trim() !== '')]
             }
 
-            //This will be used to only display the filters type results
-            state.filterList.length > 0 ? state.isFiltering = true : state.isFiltering = false
+            const filterLength = state.filterList
 
-            // state.filteredCards = state.allCards.filter(item => item.type.includes(state.filterList))
-            state.filteredCards = state.searchResults.filter(monster =>
-                state.filterList.every(key => monster.race.includes(key) || monster.type.includes(key))//every() returns true if all elements in the array pass the test
-            )
+            //This will be used to only display the filters type results
+            filterLength.length > 0 ? state.isFiltering = true : state.isFiltering = false
+
+            //filler all the cards bases on the filterList values
+            state.filteredCards = state.searchResults.filter(card => {
+                const regex = new RegExp("\\b" + state.filterList.join("|") + "\\b", "i");
+
+                /* 
+                This regular expression is designed to match any of the words in the filterList 
+                array as complete words in a case-insensitive manner. 
+                This allows you to effectively check if any of the elements 
+                in the list match the target string or not.
+                */
+                return regex.test(card.type) || regex.test(card.race);
+
+            });
+
         },
         saveDeck: (state, action) => {
             // Save deck to state

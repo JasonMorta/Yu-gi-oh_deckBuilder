@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeCard, saveDeck } from "../redux/cardsState";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { useLocation } from "react-router-dom";
+import { AddToFavs } from "./CustomFuntions";
 
 // style for the modal button
 const modelBtn = {
@@ -62,11 +63,13 @@ export default function CardPrevModal({ cardInfo }) {
   };
 
   // add(not save) card to deck
-  function addToDeck(card) {
+  function addToFav(card) {
     // dave card to redux deck array
     dispatch(saveDeck(card));
 
-    console.log("deck: ", deck);
+    const currentUserId = "6531a8c18b7c13f3ec6ec752"
+    
+    AddToFavs(currentUserId, card.id);
   }
 
   function removeFromDeck(card) {
@@ -119,7 +122,7 @@ export default function CardPrevModal({ cardInfo }) {
                 <IconButton color="success" aria-label="add to deck">
                   <LibraryAddIcon
                     titleAccess="add to deck"
-                    onClick={() => addToDeck(cardInfo)}
+                    onClick={() => addToFav(cardInfo)}
                   />
                 </IconButton>
                 <IconButton color="success" aria-label="add to deck">

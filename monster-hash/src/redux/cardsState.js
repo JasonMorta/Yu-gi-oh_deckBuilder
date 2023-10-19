@@ -35,7 +35,7 @@ export const state = createSlice({
             // Filter cards by name or description
             // Also ignore case-sensitivity and search for whole words only
             state.searchResults = state.allCards.filter(item => {
-
+    
                 //Filter exact match
                 // const regex = new RegExp("\\b" + action.payload.toLowerCase() + "\\b");
                 // return regex.test(item.name.toLowerCase()) || regex.test(item.desc.toLowerCase());
@@ -43,11 +43,12 @@ export const state = createSlice({
                 //filter containing match
 
                 const regex = new RegExp(action.payload.toLowerCase());
+
                 return regex.test(item.name.toLowerCase()) || regex.test(item.desc.toLowerCase());
 
             })
         },
-        filerMyResults: (state, action) => {
+        filerMyResults: (state, action) => {//when selecting filters
 
             let filterKeys = [action.payload.add]
 

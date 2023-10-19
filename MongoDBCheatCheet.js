@@ -160,7 +160,11 @@ db.coll.updateMany({}, { $set: { "grades.$[element]": 100 } }, { multi: true, ar
 
 // $inc: increments the value of the specified field by the specified amount
 // returnNewDocument: true, // The returnNewDocument option specifies whether to return the updated document or not.
-db.coll.findOneAndUpdate({ "name": "Max" }, { $inc: { "points": 5 } }, { returnNewDocument: true })
+db.coll.findOneAndUpdate(
+    { "name": "Max" }, 
+{ $inc: { "points": 5 } }, 
+{ returnNewDocument: true }
+)
 
 // updateOne can take up to 3 arguments: filter, update, options
 
@@ -357,3 +361,6 @@ db.coll.insertMany([{ name: "Max" }, { name: "Alex" }], { ordered: false })// de
 db.coll.insertOne({ date: ISODate() })
 db.coll.insertOne({ name: "Max" }, { "writeConcern": { "w": "majority", "wtimeout": 5000 } })
 // The second argument is the write concern. In short: how many nodes need to confirm the write operation before it is considered successful. Not required.
+
+//save a new document
+db.coll.save({ name: "Max" })

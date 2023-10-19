@@ -50,7 +50,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    border: 1px solid gray;
+    border: 1px solid rgb(182, 182, 182);
+    margin: 10px 0px;
 }
 
 
@@ -60,4 +61,5 @@
     background-color: #db2828;
     color: rgb(255, 255, 255);
     font-family: system-ui;
+    margin-top: 0;
 }

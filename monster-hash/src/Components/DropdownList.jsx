@@ -82,8 +82,6 @@ export default function DropdownList() {
 
   //MONSTER TYPE
   const handleCardRaceChange = (event) => {
-    console.log("searchResults", searchResults);
-    console.log('filterList', filterList)
     const removed = event.target?.previousSibling?.data;
     const added = event.target?.innerText;
     dispatch(filerMyResults({ add: added, del: removed })); // merge the two arrays and remove duplicates
@@ -91,8 +89,6 @@ export default function DropdownList() {
 
   //menu options for card type
   const handleCardTypeChange = (event) => {
-    console.log("searchResults", searchResults);
-    console.log('filterList', filterList)
     const removed = event.target?.previousSibling?.data;
     const added = event.target?.innerText;
     dispatch(filerMyResults({ add: added, del: removed })); // merge the two arrays and remove duplicates

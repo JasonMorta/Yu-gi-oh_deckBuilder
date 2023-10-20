@@ -42,7 +42,6 @@ export const GetUserData = async (id) => {
   }
   const req = await fetch(url, options)
   const res = await req.json()
-  console.log('res', res)
   return res
 }
 

@@ -41,8 +41,6 @@ export const state = createSlice({
 
             let filterKeys = [action.payload.add]
 
-            console.log('addCard', filterKeys)
-
             // remove the del value from the filterList or add the add value to the filterList
             if (action.payload.del !== undefined) {
                 // Remove the deleted option from the filterList

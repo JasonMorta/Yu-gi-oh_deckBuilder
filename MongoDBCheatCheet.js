@@ -196,14 +196,38 @@ db.coll.updateMany({}, {
 )
 
 
-//* Collection Functions
+//* Collection Methods
 
-// db.coll.stats() : returns statistics about the collection
-// db.coll.storageSize() : returns the total size in bytes of the data in the collection
-// db.coll.totalIndexSize() : returns the total size in bytes of all indexes created on the collection
-// db.coll.validate({full: true}) : validates the collection, returning statistics that reflect the extent of corruption
-// db.coll.renameCollection() : renames the collection = db.coll.renameCollection("newName")
+//Return a specific collection in the database using the mongoose.connection object
+//This is done after the connection has been established
+const db = mongoose.connection.db;// gives us access to the database
+const coll = db.collection("collectionName");
 
+//can only be used in the mongo shell/terminal. Not in the application code(sometimes).
+coll.stats() // returns statistics about the collection
+coll.storageSize() // returns the total size in bytes of the data in the collection
+coll.totalIndexSize() // returns the total size in bytes of all indexes created on the collection
+coll.validate({full: true}) // validates the collection, returning statistics that reflect the extent of corruption
+coll.renameCollection() // renames the collection = db.coll.renameCollection("newName")
+//↑↑↑↑ Above methods are deprecated as of MongoDB 4.0. ↑↑↑↑
+
+//use $collStats instead
+coll.aggregate([{ $collStats: {} }]) // returns statistics about the collection
+
+//get the collection size in bytes. *🚩.toArray() is required to return the results as an array
+coll.aggregate([{ $collStats: { storageStats: { scale: 1 } } }]).toArray()
+// storageStats gives gives you access to the storage statistics of the collection.
+// scale: 1 returns the size in bytes. 
+// scale: 1024 returns the size in kilobytes. 
+// scale: 1048576 returns the size in megabytes.
+
+// OR use
+
+// db[0].storageStats.size : returns the size of the collection in bytes
+// log(db[0].storageStats): to see all the properties available
+
+// Rename a collection
+coll.renameCollection("oldName", "newName", { dropTarget: true }); // Set dropTarget to true to drop the target collection if it already exists
 
 //*============================================ DELETE ============================================*//
 // deletes the first document that matches the filter condition
@@ -342,6 +366,9 @@ db.coll.find({}).skip(10)
 
 // limit(): returns only 3 documents
 db.coll.find({}).limit(3)
+
+//.toArray(): returns all the documents in an array
+db.coll.find({}).toArray()
 
 db.coll.find({}).sort({ "year": 1, "rating": -1 }).skip(10).limit(3) // all the above combined.
 

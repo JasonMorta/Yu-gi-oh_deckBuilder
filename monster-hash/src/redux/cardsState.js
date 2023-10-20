@@ -4,12 +4,14 @@ import _, { set } from "lodash";
 //set all state initial values
 const initialState = {
     allCards: [],//all cards from API
+    input: '',//search input
     filteredCards: [],// search results
     filterList: [],// array of values to filter by
     isFiltering: false,
     searchResults: [],// search results
     deck: [],//current - selected deck
     savedDecks: [],//deck names from API - {deckName: 'name', cardIds: [] }
+    favoriteCards: [],//favorite cards from API
     edit: false,
     currentEdit: null,
     showMyDeck: false
@@ -27,26 +29,13 @@ export const state = createSlice({
             state.allCards = action.payload
             console.log(`%c All cards loaded`, 'color: green')
         },
-        filter: (state, action) => { //When making a search in the search bar
-            console.log('action.payload', action.payload)
+
+        //When making a search in the search bar
+        filter: (state, action) => { 
             // First disable filter when making a new search
             state.isFiltering = false
-
-            // Filter cards by name or description
-            // Also ignore case-sensitivity and search for whole words only
-            state.searchResults = state.allCards.filter(item => {
-    
-                //Filter exact match
-                // const regex = new RegExp("\\b" + action.payload.toLowerCase() + "\\b");
-                // return regex.test(item.name.toLowerCase()) || regex.test(item.desc.toLowerCase());
-
-                //filter containing match
-
-                const regex = new RegExp(action.payload.toLowerCase());
-
-                return regex.test(item.name.toLowerCase()) || regex.test(item.desc.toLowerCase());
-
-            })
+            state.searchResults = action.payload[1]
+           
         },
         filerMyResults: (state, action) => {//when selecting filters
 
@@ -85,7 +74,7 @@ export const state = createSlice({
         },
         saveDeck: (state, action) => {
             // Save deck to state
-            state.deck = [...state.deck, action.payload]
+           // state.deck = [...state.deck, action.payload]
         },
         deleteCard: (state, action) => {
             // Delete card from deck
@@ -99,6 +88,14 @@ export const state = createSlice({
             // Remove card from deck
             state.deck = state.deck.filter(item => item.id !== action.payload.id)
         },
+        setFavoriteCards: (state, action) => { //on app load
+            // Set favorite cards
+            state.favoriteCards = action.payload[1].favoriteCards
+        },
+        addToFavorites: (state, action) => {
+            // Add to favorites
+            state.favoriteCards = [...state.favoriteCards, action.payload]
+        }
 
 
 
@@ -108,6 +105,15 @@ export const state = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { loadCards, filter, saveDeck, showDeck, removeCard, filerMyResults } = state.actions
+export const { 
+    loadCards, 
+    filter, 
+    saveDeck, 
+    showDeck, 
+    removeCard, 
+    filerMyResults, 
+    setFavoriteCards, 
+    addToFavorites 
+} = state.actions
 
 export default state.reducer

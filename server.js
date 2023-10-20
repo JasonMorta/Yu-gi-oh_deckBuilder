@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const { getCurrentDate } = require('./utils/utils.js')// allows us to use getCurrentDate function
+const { getCurrentDate, log, formatBytes } = require('./utils/utils.js')// allows us to use getCurrentDate function
 require('dotenv').config()// allows us to use .env file
 const mongoose = require('mongoose');// database connection and models
 const cors = require("cors"); // allows cross-site HTTP request
@@ -16,7 +16,7 @@ const port = process.env.PORT || 8080
 
 // import card model
 const schemaModel = require('./model.js')
-const cards = require('./module-allCards.js')
+const cardsModel = require('./module-allCards.js')
 
 //import test file
 //const test = require('./filter.js')
@@ -33,20 +33,67 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
-    console.log('Connected to MongoDB');
+    console.log('Connected to MongoDB 🎉✨');
 });
+
+// get specific collection
+const getCollection = (collectionName) => {
+    //MongoDB Node.js driver, bypassing the Mongoose schema. 
+
+    const db = mongoose.connection.db;// gives us access to the database
+    const collection = db.collection(collectionName);
+
+    return collection;
+}
+
 
 /* ===========================API Routes=============================== */
 //
 app.get('/all', async (req, res) => {
-    console.log("Getting all cards...⏳")
+    log("Getting all cards...⏳")
     try {
-        const all = await cards.find({})
-        console.log("Get them ✔")
-        res.json([" ", all])
+        // const all = await cards.find({})
+
+        const collection = getCollection('allcards');
+
+        //get collection stats and extract size
+        const stats = await collection.aggregate([{ $collStats: { storageStats: {} } }]).toArray();
+        //const sizeInBytes = stats[0].storageStats.size;
+        //const getSize = await formatBytes(sizeInBytes)
+
+
+        const allUsers = await collection.find({}).limit(1).toArray();
+
+        res.json([" ", allUsers])
+        log("Get them ✔")
     } catch (error) {
         console.log(error)
 
+    }
+})
+
+// query cards by name and description
+app.post('/search', async (req, res) => {
+    log("Searching query cards...⏳")
+
+    try {
+        const { find } = req.body;
+        // indexing is used to improve the performance of search queries
+        // indexing allows the database to find the query faster 
+        // by creating a reference to the query
+        const query = {
+            $or: [
+                { desc: { $regex: find, $options: 'i' } },
+                { race: { $regex: find, $options: 'i' } }
+            ]
+        };
+
+        const results = await cardsModel.find(query).exec();
+        //.exec() Executing the query and returning a promise with the results
+        res.json([" ", results])
+        log("Found ✔")
+    } catch (error) {
+        console.log(error)
     }
 })
 
@@ -72,15 +119,30 @@ app.post('/createUser', async (req, res) => {
     }
 })
 
+//get user data
+app.post('/getUserData', async (req, res) => {
+    log("Getting user data...⏳")
+    try {
+        const { id } = req.body
+        const query = { _id: id };
+        const userData = await schemaModel.findOne(query).exec();
+        res.json([" ", userData])
+        log("Got user data ✔")
+    } catch (error) {
+        console.log(error)
+
+    }
+})
+
 
 //Add to favorites
 app.put('/fav', async (req, res) => {
-    const { id, cardId } = req.body
+    const { id, card } = req.body
     console.log("Adding to favorites...⏳")
     try {
         const array = await schemaModel.findOneAndUpdate(
             { _id: id },
-            { $push: { "favoriteCards": cardId } },
+            { $push: { "favoriteCards": card } },
             { returnNewDocument: true }
         )
         console.log("✔️ added to fav")

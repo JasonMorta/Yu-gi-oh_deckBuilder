@@ -1,45 +1,42 @@
-import React, { useState } from 'react'
-import { Input } from 'semantic-ui-react';
+import React, { useEffect, useState } from "react";
+import { Input } from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
-import { filter,  } from "../redux/cardsState";
-import CSS from "./searchInput.module.css"
-
+import { filter } from "../redux/cardsState";
+import CSS from "./searchInput.module.css";
+import { FindCards } from "./CustomFuntions";
 
 export default function SearchInput() {
+  const [input, setInput] = useState("");
 
-    const [input, setInput] = useState('')
+  //get dispatch from store
+  const dispatch = useDispatch();
 
-    //get dispatch from store
-    const dispatch = useDispatch();
+  async function searchIcon() {
+    dispatch(filter(await FindCards(input)));
+  }
 
   
- 
 
-
-    
- function searchIcon(e) {
-      dispatch(filter(input));
+  async function handleInput(e) {
+    //disable filtering when making new search request
+    setInput(e.target.value);
+    //make a search request on"Enter" key
+    if (e.key === "Enter") {
+      dispatch(filter(await FindCards(e.target.value)));
+    }
   }
-
-  function handleInput(e) {
-  //disable filtering when making new search request
-      setInput(e.target.value)
-
-      //make a search request on"Enter" key
-        if (e.key === "Enter") {
-            dispatch(filter(e.target.value));
-        }
-  }
-
 
   return (
-    <Input
-    icon={{ name: 'search', circular: true, link: true, onClick: searchIcon, }}
-    placeholder='Search...'
-    onKeyDown={(e)=> handleInput(e)}
-    className={CSS.searchInput}
-  />
-  )
+   <>
+      <Input
+        icon={{ name: "search", circular: true, link: true, onClick: searchIcon }}
+        placeholder="Search..."
+        //onChange={(e) => handleInput(e)}
+        onKeyUp={(e) => handleInput(e)}
+        className={CSS.searchInput}
+        defaultValue={input}
+      />
+      <p>{input}</p>
+   </>
+  );
 }
-
-

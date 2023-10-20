@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { loadCards } from "../redux/cardsState";
+import { loadCards, setFavoriteCards } from "../redux/cardsState";
+import { GetUserData } from './CustomFuntions';
 
 
 // The component will fect all the cards form the serve on load.
@@ -11,33 +12,11 @@ export default function InitCards() {
   const dispatch = useDispatch();
 
 
-  // API Call
-  async function fetchCards() {
-
-    await fetch("/all", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((response) => {
-        // save cards to redux store
-        dispatch(loadCards(response[1]))
-        console.log(`%c READY`, 'color: #2196f3')
-
-      })
-      .catch((error) => {
-        console.table(error)
-      })
-  }
-
+  //gets user data and send to store
   useEffect(() => {
-    fetchCards()
+   async function fetchData() {
+    dispatch(setFavoriteCards( await GetUserData("6531a8c18b7c13f3ec6ec752")))
+   }
+   fetchData() 
   }, [])
-
-
-
-
-  return
 }

@@ -61,5 +61,7 @@
     background-color: #db2828;
     color: rgb(255, 255, 255);
     font-family: system-ui;
-    margin-top: 0;
+    margin: 0;
+    padding: 0 5px;
+    border-radius: 6px;
 }

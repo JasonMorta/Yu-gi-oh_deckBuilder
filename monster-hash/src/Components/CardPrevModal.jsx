@@ -5,12 +5,16 @@ import "./Card.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import IconButton from "@mui/material/IconButton";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import {
+  BookmarkBorderSharp, 
+  BookmarkAddOutlined,
+  StarBorder,
+  StarRate,
+} from "@mui/icons-material";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { useSelector, useDispatch } from "react-redux";
-import { removeCard, saveDeck } from "../redux/cardsState";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import { removeCard, addToFavorites } from "../redux/cardsState";
 import { useLocation } from "react-router-dom";
 import { AddToFavs } from "./CustomFuntions";
 
@@ -62,14 +66,18 @@ export default function CardPrevModal({ cardInfo }) {
     setOpen(false);
   };
 
-  // add(not save) card to deck
+  // Add card to favorites array in stroe
   function addToFav(card) {
     // dave card to redux deck array
-    dispatch(saveDeck(card));
-
+  
     const currentUserId = "6531a8c18b7c13f3ec6ec752"
+
+    // add to use doc on mongo
+    AddToFavs(currentUserId, card);
+
+    // add to redux store
+    dispatch(addToFavorites(card));
     
-    AddToFavs(currentUserId, card.id);
   }
 
   function removeFromDeck(card) {
@@ -120,14 +128,14 @@ export default function CardPrevModal({ cardInfo }) {
             {location.pathname !== "/deck" ? (
               <>
                 <IconButton color="success" aria-label="add to deck">
-                  <LibraryAddIcon
-                    titleAccess="add to deck"
+                  <StarBorder
+                    titleAccess="Add to favorites"
                     onClick={() => addToFav(cardInfo)}
                   />
                 </IconButton>
-                <IconButton color="success" aria-label="add to deck">
-                  <BookmarkBorderIcon titleAccess="Add to favorites" />
-                </IconButton>
+                {/* <IconButton color="success" aria-label="add to deck">
+                  <BookmarkBorderSharp titleAccess="Add to favorites" />
+                </IconButton> */}
               </>
             ) : (
               <IconButton
@@ -135,7 +143,7 @@ export default function CardPrevModal({ cardInfo }) {
                 aria-label="add to deck"
                 onClick={() => removeFromDeck(cardInfo)}
               >
-                <RemoveCircleOutlineIcon titleAccess="remove from deck" />
+                <BookmarkAddOutlined titleAccess="remove from deck" />
               </IconButton>
             )}
           </div>

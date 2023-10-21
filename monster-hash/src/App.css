@@ -27,7 +27,7 @@ div {
   font-size: calc(10px + 1vmin);
   color: rgb(0, 0, 0);
   overflow: hidden;
-
+  background-image: url("./images/footer_lodyas.png");
 }
 
 

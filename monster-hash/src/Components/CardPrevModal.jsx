@@ -8,6 +8,7 @@ import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import {
   BookmarkBorderSharp, 
   BookmarkAddOutlined,
+  RemoveCircleRounded,
   StarBorder,
   StarRate,
 } from "@mui/icons-material";
@@ -101,6 +102,7 @@ export default function CardPrevModal({ cardInfo }) {
         >
           <h2>{cardInfo.name}</h2>
 
+          {/* IMAGE SECTION */}
           <LazyLoadImage
             id={`image-${cardInfo._id}`}
             alt={cardInfo.name}
@@ -117,8 +119,12 @@ export default function CardPrevModal({ cardInfo }) {
             visibleByDefault={false}
             src={cardInfo.card_images[0].image_url} // use normal <img> attributes as props
           />
+
+          {/* DESCRIPTION SECTION */}
           <p className="card_desc">{cardInfo.desc}</p>
 
+
+          {/* BUTTON-OPTIONS SECTIONS */}
           <div className="save_button_sections">
             {cardInfo.banlist_info?.ban_tcg === "Banned" ? (
               <p className="banned_warning">Banned</p>
@@ -143,7 +149,7 @@ export default function CardPrevModal({ cardInfo }) {
                 aria-label="add to deck"
                 onClick={() => removeFromDeck(cardInfo)}
               >
-                <BookmarkAddOutlined titleAccess="remove from deck" />
+                <RemoveCircleRounded titleAccess="remove from deck" />
               </IconButton>
             )}
           </div>

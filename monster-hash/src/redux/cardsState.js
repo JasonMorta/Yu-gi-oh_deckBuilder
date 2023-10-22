@@ -82,15 +82,17 @@ export const state = createSlice({
             // Toggle showDeck state
             state.showMyDeck = !state.showMyDeck
         },
-        removeCard: (state, action) => {
+        removeCard: (state, action) => {// Remove card from favs
+            console.log('action', action)
             // Remove card from deck
-            state.deck = state.deck.filter(item => item.id !== action.payload.id)
+            state.favoriteCards = state.favoriteCards.filter(item => item.id !== action.payload.id)
         },
         setFavoriteCards: (state, action) => { //on app load
             // Set favorite cards
             state.favoriteCards = action.payload[1].favoriteCards
         },
         addToFavorites: (state, action) => {
+            
             // Add to favorites
             state.favoriteCards = [...state.favoriteCards, action.payload]
         }

@@ -125,12 +125,12 @@ export default function CardPrevModal({ cardInfo }) {
             ) : (
               <></>
             )}
-            {location.pathname !== "/deck" ? (
+            {location.pathname !== "/favs" ? (
               <>
-                <IconButton color="success" aria-label="add to deck">
+                <IconButton color="success" aria-label="add to deck" onClick={() => addToFav(cardInfo)}>
                   <StarBorder
                     titleAccess="Add to favorites"
-                    onClick={() => addToFav(cardInfo)}
+                    
                   />
                 </IconButton>
                 {/* <IconButton color="success" aria-label="add to deck">

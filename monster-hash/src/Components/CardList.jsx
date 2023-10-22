@@ -13,9 +13,9 @@ export default function CardList() {
   const isFiltering = useSelector((state) => state.cardsState.isFiltering);
 
   return (
-    <div className={CSS.result_container}>
+    <div className={CSS.result_container} >
       {!isFiltering ? searchResults.map((card) => (
-       <>
+       <div key={card.id}>
          <LazyImage 
           src={card.card_images[0].image_url}
           alt={card.name}
@@ -25,10 +25,10 @@ export default function CardList() {
           label={card.name}
           cardInfo={card}
           />
-       </>
+       </div>
            )):
            filteredCards.map((card) => (
-            <>
+            <div key={card.id}>
               <LazyImage 
                src={card.card_images[0].image_url}
                alt={card.name}
@@ -38,7 +38,7 @@ export default function CardList() {
                label={card.name}
                cardInfo={card}
                />
-            </>
+            </div>
                 ))
            
            }

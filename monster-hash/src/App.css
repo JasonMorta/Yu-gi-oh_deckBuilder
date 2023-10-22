@@ -1,5 +1,7 @@
 
-
+html {
+  background-color: rgb(0, 71, 71);
+}
 
 @font-face {
   font-family: Raleway;

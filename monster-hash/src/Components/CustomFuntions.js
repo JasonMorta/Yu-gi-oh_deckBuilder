@@ -15,6 +15,7 @@ export const AddToFavs = async (userId, card) => {
 
 //search for cards on DB
 export const FindCards = async (find) => {
+  console.log('find', find)
   const url = "/search"
   const quey = { find: find }
   const options = {

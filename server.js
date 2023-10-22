@@ -78,13 +78,14 @@ app.post('/search', async (req, res) => {
 
     try {
         const { find } = req.body;
+        console.log('find', find)
         // indexing is used to improve the performance of search queries
         // indexing allows the database to find the query faster 
         // by creating a reference to the query
         const query = {
             $or: [
                 { desc: { $regex: find, $options: 'i' } },
-                { race: { $regex: find, $options: 'i' } }
+                { name: { $regex: find, $options: 'i' } }
             ]
         };
 

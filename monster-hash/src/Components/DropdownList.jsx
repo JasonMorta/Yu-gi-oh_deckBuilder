@@ -4,6 +4,7 @@ import { Dropdown } from "semantic-ui-react";
 import CSS from "./dropdown.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { filter, filerMyResults } from "../redux/cardsState";
+import ToggleBtn from "./ToggleBtn";
 
 export default function DropdownList() {
   const monsterRace = [
@@ -33,24 +34,36 @@ export default function DropdownList() {
     "Wyrm",
     "Zombie",
     "Continuous",
-    "Equip"
+    "Equip",
+    "Counter",
+    "Continuous",
+    "Quick-Play",
+    "Field",
+    "Normal",
   ];
 
   const cardTypes = [
+    "Tuner Monster",
     "Spell Card",
-    "Trap Card",
-    "Normal Monster",
     "Effect Monster",
-    "Fusion Monster",
+    "Trap Card",
     "Synchro Monster",
-    "Xyz Monster",
+    "Normal Monster",
+    "Ritual Monster",
+    "Fusion Monster",
+    "XYZ Monster",
+    "Flip Effect Monster",
     "Link Monster",
-    "Normal Spell",
-    "Field Spell",
-    "Quick-Play Spell",
-    "Normal Trap",
-    "Continuous Trap",
-    "Counter Trap",
+    "Pendulum Effect Monster",
+    "Pendulum Normal Monster",
+    "Pendulum Tuner Effect Monster",
+    "Pendulum Flip Effect Monster",
+    "Pendulum Effect Fusion Monster",
+    "Pendulum Effect Synchro Monster",
+    "Pendulum Effect Xyz Monster",
+    "Pendulum Effect Link Monster",
+    "Skill Card",
+    "Token",
   ];
 
   const dispatch = useDispatch();
@@ -59,8 +72,7 @@ export default function DropdownList() {
   const filteredCards = useSelector((state) => state.cardsState.filteredCards);
   const searchResults = useSelector((state) => state.cardsState.searchResults);
   const isFiltering = useSelector((state) => state.cardsState.isFiltering);
-  
-
+  const toggleButtons = useSelector((state) => state.cardsState.toggleButtons);
   const [joinedArray, setJoinedArray] = React.useState([]);
 
   // dropdown options for monster types
@@ -79,16 +91,33 @@ export default function DropdownList() {
 
   //MONSTER TYPE
   const handleCardRaceChange = (event) => {
+    //get the name of the removed card or is undefined
     const removed = event.target?.previousSibling?.data;
     const added = event.target?.innerText;
-    dispatch(filerMyResults({ add: added, del: removed })); // merge the two arrays and remove duplicates
+
+    // merge the two arrays and remove duplicates
+    dispatch(filerMyResults({ add: added, del: removed }));
   };
 
   //menu options for card type
   const handleCardTypeChange = (event) => {
     const removed = event.target?.previousSibling?.data;
     const added = event.target?.innerText;
-    dispatch(filerMyResults({ add: added, del: removed })); // merge the two arrays and remove duplicates
+
+    // merge the two arrays and remove duplicates
+    dispatch(filerMyResults({ add: added, del: removed }));
+  };
+
+  //set btn color
+
+  const toggleBtn = (CardType) => {
+    console.log("TTT", toggleButtons[CardType]);
+    dispatch(
+      filerMyResults({
+        add: CardType,
+        del: toggleButtons[CardType] ? CardType : undefined,
+      })
+    );
   };
 
   return (
@@ -102,8 +131,24 @@ export default function DropdownList() {
       </p>
       {searchResults.length > 0 ? (
         <>
+          <ToggleBtn
+            text={"Trap cards"}
+            buttonId={"Trap"}
+            clickEvent={() => toggleBtn("trap")}
+          />
+          <ToggleBtn
+            text={"Spell cards"}
+            buttonId={"Spell"}
+            clickEvent={() => toggleBtn("spell")}
+          />
+          <ToggleBtn
+            text={"Monster cards"}
+            buttonId={"Monster"}
+            clickEvent={() => toggleBtn("monster")}
+          />
+
           <Dropdown
-            placeholder="Monster Type / Race"
+            placeholder="Monster Type Race & Spell/Trap type"
             fluid
             multiple // allows multiple selections
             search

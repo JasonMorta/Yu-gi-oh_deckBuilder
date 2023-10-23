@@ -11,7 +11,6 @@ import { useLocation } from "react-router-dom";
 function LazyImage({ cardInfo, src, alt, id, subtitle, title, label }) {
 
   const location = useLocation();
-  console.log('location.pathname', location.pathname)
 
   return (
     <ImageListItem key={id}>

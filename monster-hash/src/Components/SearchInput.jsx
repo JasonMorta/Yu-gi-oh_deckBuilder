@@ -11,11 +11,10 @@ export default function SearchInput() {
   //get dispatch from store
   const dispatch = useDispatch();
 
+  //get cards from API the pass result to store as argument
   async function searchIcon() {
     dispatch(filter(await FindCards(input)));
   }
-
-  
 
   async function handleInput(e) {
     //disable filtering when making new search request

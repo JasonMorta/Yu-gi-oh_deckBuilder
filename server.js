@@ -5,7 +5,8 @@ require('dotenv').config()// allows us to use .env file
 const mongoose = require('mongoose');// database connection and models
 const cors = require("cors"); // allows cross-site HTTP request
 const bodyParser = require('body-parser');// allows JSON transfers between client and server.
-require('dotenv').config()
+require('dotenv').config();
+const mongoSanitize = require('express-mongo-sanitize');
 app.use(bodyParser.urlencoded({ extended: false }))// parse application/x-www-form-urlencoded. Extended means that the object can contain nested objects.
 app.use(bodyParser.json())
 const corsOptions = { origin: "*" };
@@ -47,8 +48,8 @@ const getCollection = (collectionName) => {
 }
 
 
-/* ===========================API Routes=============================== */
-//
+/* ===========================API Routes-CRUD=============================== */
+//! Get all cards
 app.get('/all', async (req, res) => {
     log("Getting all cards...⏳")
     try {
@@ -72,13 +73,16 @@ app.get('/all', async (req, res) => {
     }
 })
 
-// query cards by name and description
+//! Search for cards by name and description
 app.post('/search', async (req, res) => {
     log("Searching query cards...⏳")
 
     try {
-        const { find } = req.body;
-        console.log('find', find)
+        let { find } = req.body;
+        find = mongoSanitize.sanitize(find); 
+        // Without this sanitization, malicious users could submit a query like this: { $gt: "" } and retrieve all documents in the collection.
+
+        log("Searching for: " + find)
         // indexing is used to improve the performance of search queries
         // indexing allows the database to find the query faster 
         // by creating a reference to the query
@@ -94,11 +98,12 @@ app.post('/search', async (req, res) => {
         res.json([" ", results])
         log("Found ✔")
     } catch (error) {
-        console.log(error)
+        log(error);
+        res.status(500).json({ error: 'An error occurred while processing your request.' });
     }
 })
 
-//create user
+//! Create a user
 app.post('/createUser', async (req, res) => {
     try {
 
@@ -120,7 +125,7 @@ app.post('/createUser', async (req, res) => {
     }
 })
 
-//get user data
+//! Get user data-document
 app.post('/getUserData', async (req, res) => {
     log("Getting user data...⏳")
     try {
@@ -136,7 +141,7 @@ app.post('/getUserData', async (req, res) => {
 })
 
 
-//Add to favorites
+//! Add card to user favorites array
 app.put('/fav', async (req, res) => {
     const { id, card } = req.body
     console.log("Adding to favorites...⏳")
@@ -154,6 +159,26 @@ app.put('/fav', async (req, res) => {
     }
 })
 
+//! Remove card from user favorites array
+app.put('/removeFav', async (req, res) => {
+    const { id, card } = req.body
+    console.log('id', id)
+    console.log('card', card)
+    
+    console.log("Removing from favorites...⏳")
+    // try {
+    //     const array = await schemaModel.findOneAndUpdate(
+    //         { _id: id },
+    //         { $pull: { "favoriteCards": card } },
+    //         { returnNewDocument: true }
+    //     )
+    //     console.log("✔️ removed from fav")
+    //     res.json([" ", array])
+    // } catch (error) {
+    //     console.log(error)
+
+    // }
+})
 
 // //Update saved decks by deck-name
 // app.get('/savedDecks', async (req, res) => {

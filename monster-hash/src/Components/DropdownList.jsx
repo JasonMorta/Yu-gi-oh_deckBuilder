@@ -32,6 +32,8 @@ export default function DropdownList() {
     "Winged Beast",
     "Wyrm",
     "Zombie",
+    "Continuous",
+    "Equip"
   ];
 
   const cardTypes = [
@@ -44,8 +46,6 @@ export default function DropdownList() {
     "Xyz Monster",
     "Link Monster",
     "Normal Spell",
-    "Continuous Spell",
-    "Equip Spell",
     "Field Spell",
     "Quick-Play Spell",
     "Normal Trap",
@@ -59,12 +59,9 @@ export default function DropdownList() {
   const filteredCards = useSelector((state) => state.cardsState.filteredCards);
   const searchResults = useSelector((state) => state.cardsState.searchResults);
   const isFiltering = useSelector((state) => state.cardsState.isFiltering);
-  const filterList = useSelector((state) => state.cardsState.filterList);
   
 
   const [joinedArray, setJoinedArray] = React.useState([]);
-  const [raceArray, setRaceArray] = React.useState([]);
-  const [cardTypeArray, setCardTypeArray] = React.useState([]);
 
   // dropdown options for monster types
   const monsterRaceOptions = _.map(monsterRace, (state, index) => ({

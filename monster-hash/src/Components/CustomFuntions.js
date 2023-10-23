@@ -1,3 +1,4 @@
+//! Add card to users favorites array
 export const AddToFavs = async (userId, card) => {
   //save to db
   const url = "/fav"
@@ -12,8 +13,27 @@ export const AddToFavs = async (userId, card) => {
   await fetch(url, options)
 }
 
+//! Remove card from users favorites array
+export const RemoveFromFavs = async (userId, card) => {
+  console.log('card', card)
+  console.log('userId', userId)
 
-//search for cards on DB
+  //save to db
+  const url = "/removeFav"
+  const data = { id: userId, card: card }
+
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  }
+  await fetch(url, options)
+}
+
+
+//! Search for cards on DB
 export const FindCards = async (find) => {
   console.log('find', find)
   const url = "/search"

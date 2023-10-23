@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import _, { set } from "lodash";
+import { RemoveFromFavs } from '../Components/CustomFuntions';
 
 //set all state initial values
 const initialState = {
@@ -14,7 +15,8 @@ const initialState = {
     favoriteCards: [],//favorite cards from API
     edit: false,
     currentEdit: null,
-    showMyDeck: false
+    showMyDeck: false,
+    userToken: null,
 
 }
 
@@ -84,8 +86,11 @@ export const state = createSlice({
         },
         removeCard: (state, action) => {// Remove card from favs
             console.log('action', action)
+            console.log('action', action)
             // Remove card from deck
             state.favoriteCards = state.favoriteCards.filter(item => item.id !== action.payload.id)
+           //TODO: add user id as first argument.
+            RemoveFromFavs(action.payload)
         },
         setFavoriteCards: (state, action) => { //on app load
             // Set favorite cards

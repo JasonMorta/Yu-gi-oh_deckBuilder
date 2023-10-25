@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import _, { set } from "lodash";
 import { Dropdown } from "semantic-ui-react";
 import CSS from "./dropdown.module.css";
@@ -7,11 +7,12 @@ import { filter, filerMyResults } from "../redux/cardsState";
 import ToggleBtn from "./ToggleBtn";
 
 export default function DropdownList() {
-  const monsterRace = [
+
+  const [cardRace, setCardRace] = useState([
     "Aqua",
     "Beast",
     "Beast-Warrior",
-    "Creator God",
+    "Creator-God",
     "Cyberse",
     "Dinosaur",
     "Divine-Beast",
@@ -36,11 +37,13 @@ export default function DropdownList() {
     "Continuous",
     "Equip",
     "Counter",
-    "Continuous",
     "Quick-Play",
     "Field",
     "Normal",
-  ];
+    "Yami Yugi"
+  ]) ;
+
+
 
   const cardTypes = [
     "Tuner Monster",
@@ -66,6 +69,9 @@ export default function DropdownList() {
     "Token",
   ];
 
+
+
+
   const dispatch = useDispatch();
 
   //get the filtered cards from state
@@ -76,10 +82,10 @@ export default function DropdownList() {
   const [joinedArray, setJoinedArray] = React.useState([]);
 
   // dropdown options for monster types
-  const monsterRaceOptions = _.map(monsterRace, (state, index) => ({
-    key: monsterRace[index],
+  const cardRaceOptions = _.map(cardRace.sort(), (state, index) => ({
+    key: cardRace[index],
     text: state,
-    value: monsterRace[index],
+    value: cardRace[index],
   }));
 
   // dropdown options for card types
@@ -153,7 +159,7 @@ export default function DropdownList() {
             multiple // allows multiple selections
             search
             selection // allows user to select
-            options={monsterRaceOptions}
+            options={cardRaceOptions}
             onClick={(e) => console.log("e", e)}
             className={CSS.dropdown}
             onChange={handleCardRaceChange}

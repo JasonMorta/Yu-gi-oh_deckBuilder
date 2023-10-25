@@ -79,24 +79,33 @@ app.post('/search', async (req, res) => {
 
     try {
         let { find } = req.body;
-        find = mongoSanitize.sanitize(find); 
+        find = mongoSanitize.sanitize(find);
         // Without this sanitization, malicious users could submit a query like this: { $gt: "" } and retrieve all documents in the collection.
 
         log("Searching for: " + find)
-        // indexing is used to improve the performance of search queries
-        // indexing allows the database to find the query faster 
-        // by creating a reference to the query
-        const query = {
-            $or: [
-                { desc: { $regex: find, $options: 'i' } },
-                { name: { $regex: find, $options: 'i' } }
-            ]
-        };
+        console.log('find?.length > 1', find?.length > 1)
+        //if query is empty, return dont return anything
+        if (find?.length > 1) {
+            // indexing is used to improve the performance of search queries
+            // indexing allows the database to find the query faster 
+            // by creating a reference to the query
+            const query = {
+                $or: [
+                    { desc: { $regex: find, $options: 'i' } },
+                    { name: { $regex: find, $options: 'i' } }
+                ]
+            };
 
-        const results = await cardsModel.find(query).exec();
-        //.exec() Executing the query and returning a promise with the results
-        res.json([" ", results])
-        log("Found ✔")
+            const results = await cardsModel.find(query).exec();
+            //.exec() Executing the query and returning a promise with the results
+            res.json([" ", results])
+            log("Found ✔")
+        } else {
+            res.json(["Enter at least 2 letters ", []])
+            log("Not Found ❌")
+
+        }
+
     } catch (error) {
         log(error);
         res.status(500).json({ error: 'An error occurred while processing your request.' });
@@ -164,7 +173,7 @@ app.put('/removeFav', async (req, res) => {
     const { id, card } = req.body
     console.log('id', id)
     console.log('card', card)
-    
+
     console.log("Removing from favorites...⏳")
     // try {
     //     const array = await schemaModel.findOneAndUpdate(

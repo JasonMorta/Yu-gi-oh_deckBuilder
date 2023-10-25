@@ -44,6 +44,7 @@ export const state = createSlice({
             // First disable filter when making a new search
             state.isFiltering = false
             state.searchResults = action.payload[1]
+            console.log('action.payload', action.payload)
 
         },
         filerMyResults: (state, action) => {//when selecting filters

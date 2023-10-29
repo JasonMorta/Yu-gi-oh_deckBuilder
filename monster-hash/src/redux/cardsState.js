@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import _, { set } from "lodash";
 import { RemoveFromFavs } from '../Components/CustomFuntions';
-import e from 'cors';
 
 //set all state initial values
 const initialState = {

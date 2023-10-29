@@ -37,7 +37,7 @@ export default function Favs() {
                   aria-label="add to deck"
                   onClick={() => console.log(card)}
                 >
-                  <RemoveCircleRounded titleAccess="remove from deck" />
+                  <RemoveCircleRounded titleAccess="remove from Favs" />
                 </IconButton>
               }
             />

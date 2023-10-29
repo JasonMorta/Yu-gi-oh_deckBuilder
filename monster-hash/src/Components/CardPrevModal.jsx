@@ -11,13 +11,14 @@ import {
   RemoveCircleRounded,
   StarBorder,
   StarRate,
+  Remove,
 } from "@mui/icons-material";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { useSelector, useDispatch } from "react-redux";
 import { removeCard, addToFavorites } from "../redux/cardsState";
 import { useLocation } from "react-router-dom";
-import { AddToFavs } from "./CustomFuntions";
+import { AddToFavs, RemoveFromFavs } from "./CustomFuntions";
 
 // style for the modal button
 const modelBtn = {
@@ -41,11 +42,16 @@ export default function CardPrevModal({ cardInfo }) {
   const [open, setOpen] = useState(false);
   const [modDesc, setModDesc] = useState("");
 
-  // get deck array from redux
-  const deck = useSelector((state) => state.cardsState.deck);
+
+
+  //get userId from redux
+
 
   // Dispatch is used to call the actions and update the store
   const dispatch = useDispatch();
+
+  //get user data from redux
+  const userData = useSelector((state) => state.cardsState.userData);
 
   const location = useLocation();
   /* 
@@ -82,10 +88,11 @@ export default function CardPrevModal({ cardInfo }) {
   }
 
   function removeFromDeck(card) {
+  
+    RemoveFromFavs(userData, card.id);//remove from db
+
     // dave card to redux deck array
     dispatch(removeCard(card));
-
-    console.log("card: ", card);
   }
 
   return (
@@ -149,7 +156,7 @@ export default function CardPrevModal({ cardInfo }) {
                 aria-label="add to deck"
                 onClick={() => removeFromDeck(cardInfo)}
               >
-                <RemoveCircleRounded titleAccess="remove from deck" />
+                <RemoveCircleRounded titleAccess="remove from Favs" />
               </IconButton>
             )}
           </div>

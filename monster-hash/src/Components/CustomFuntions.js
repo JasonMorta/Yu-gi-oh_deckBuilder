@@ -14,13 +14,11 @@ export const AddToFavs = async (userId, card) => {
 }
 
 //! Remove card from users favorites array
-export const RemoveFromFavs = async (userId, card) => {
-  console.log('card', card)
-  console.log('userId', userId)
-
+export const RemoveFromFavs = async (userId,cardId) => {
   //save to db
   const url = "/removeFav"
-  const data = { id: userId, card: card }
+  const data = {cardId: cardId, userId: userId._id}
+
 
   const options = {
     method: 'PUT',

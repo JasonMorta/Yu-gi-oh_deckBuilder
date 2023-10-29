@@ -170,23 +170,24 @@ app.put('/fav', async (req, res) => {
 
 //! Remove card from user favorites array
 app.put('/removeFav', async (req, res) => {
-    const { id, card } = req.body
-    console.log('id', id)
-    console.log('card', card)
+    const {userId, cardId } = req.body
+    console.log('userId', userId)
+    console.log('cardId🚨', cardId)
+
 
     console.log("Removing from favorites...⏳")
-    // try {
-    //     const array = await schemaModel.findOneAndUpdate(
-    //         { _id: id },
-    //         { $pull: { "favoriteCards": card } },
-    //         { returnNewDocument: true }
-    //     )
-    //     console.log("✔️ removed from fav")
-    //     res.json([" ", array])
-    // } catch (error) {
-    //     console.log(error)
+    try {
+        const array = await schemaModel.findOneAndUpdate(
+            { _id: userId },
+            { $pull: { favoriteCards: { id: cardId } } },
+            { returnNewDocument: false }// no need to return the new document
+        )
+        console.log("✔️ removed from fav")
+        res.json([" ", array])
+    } catch (error) {
+        console.log(error)
 
-    // }
+    }
 })
 
 // //Update saved decks by deck-name

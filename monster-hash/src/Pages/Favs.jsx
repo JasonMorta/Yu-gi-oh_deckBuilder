@@ -4,7 +4,7 @@ import { setFavoriteCards } from "../redux/cardsState";
 import ElDivider from "../Components/ElDivider";
 import LazyImage from "../Components/LazyImage";
 import { GetUserData } from "../Components/CustomFuntions";
-import CSS from "./cardList.module.css";
+import CSS from "./favCardList.module.css";
 import { IconButton } from "@mui/material";
 import { RemoveCircleRounded } from "@mui/icons-material";
 
